@@ -154,7 +154,7 @@ SMODS.Joker {
     atlas = 'j_century_egg',
     pos = { x = 0, y = 0 },
     rarity = 2,
-    cost = 6,
+    cost = 5,
     unlocked = true,
     discovered = true,
     blueprint_compat = false,
@@ -183,7 +183,7 @@ SMODS.Joker {
     atlas = 'j_chinese_chef',
     pos = { x = 0, y = 0 },
     rarity = 3,
-    cost = 8,
+    cost = 9,
     unlocked = true,
     discovered = true,
     blueprint_compat = false,
@@ -236,7 +236,7 @@ SMODS.Joker {
     blueprint_compat = true,
     perishable_compat = true,
     eternal_compat = true,
-    config = { extra = { odds = 4 } },
+    config = { extra = { odds = 3 } },
     loc_vars = function(self, info_queue, card)
     return { vars = {''..(G.GAME and G.GAME.probabilities.normal or 1), card.ability.extra.odds} }
     end,
@@ -269,7 +269,7 @@ SMODS.Joker {
     eternal_compat = true,
     config = { extra = { xmult = 1 } },
     loc_vars = function(self, info_queue, card)
-    return { vars = { card.ability.extra.xmult+1 } }
+    return { vars = { card.ability.extra.xmult } }
     end,
     calculate = function(self, card, context)
         if context.playing_card_added and not card.getting_sliced then
@@ -278,7 +278,7 @@ SMODS.Joker {
                     v.ability.perma_x_mult = v.ability.perma_x_mult or 0
                     v.ability.perma_x_mult = v.ability.perma_x_mult + card.ability.extra.xmult
                 end
-                card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.x_mult+1}}})
+                card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_xmult', vars = {card.ability.x_mult}}, colour = G.C.RED})
             end
         end
     end,
@@ -395,7 +395,7 @@ SMODS.Joker {
     blueprint_compat = true,
     perishable_compat = true,
     eternal_compat = true,
-    config = { extra = { xchips = 0.1 } },
+    config = { extra = { xchips = 0.2 } },
     loc_vars = function(self, info_queue, card)
     return { vars = { card.ability.extra.xchips } }
     end,
@@ -413,7 +413,7 @@ SMODS.Joker {
     atlas = 'j_sam_club',
     pos = { x = 0, y = 0 },
     rarity = 2,
-    cost = 5,
+    cost = 6,
     unlocked = true,
     discovered = true,
     blueprint_compat = false,
@@ -433,13 +433,15 @@ SMODS.Joker {
     end,
     remove_from_deck = function(self, card, context)
         change_shop_size(-card.ability.extra.slot)
-        G.GAME.modifiers.inflation = false
-        G.GAME.inflation = ref_inflation or 0
-        G.E_MANAGER:add_event(Event({func = function()
-            for k, v in pairs(G.I.CARD) do
-                if v.set_cost then v:set_cost() end
-            end
-        return true end }))
+        if not next(SMODS.find_card("j_slightjokers_sam_club")) then
+            G.GAME.modifiers.inflation = false
+            G.GAME.inflation = ref_inflation or 0
+            G.E_MANAGER:add_event(Event({func = function()
+                for k, v in pairs(G.I.CARD) do
+                    if v.set_cost then v:set_cost() end
+                end
+            return true end }))
+        end
     end,
 }
 
@@ -448,7 +450,7 @@ SMODS.Joker {
     atlas = 'j_world_end',
     pos = { x = 0, y = 0 },
     rarity = 3,
-    cost = 8,
+    cost = 9,
     unlocked = true,
     discovered = true,
     blueprint_compat = true,
@@ -493,10 +495,12 @@ SMODS.Joker {
     end,
     calculate = function(self, card, context)
         if context.buying_card and not context.blueprint then
-            card.ability.extra.xchips = card.ability.extra.xchips + card.ability.extra.increase
-            G.E_MANAGER:add_event(Event({
-                func = function() card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')}); return true
-            end}))
+            if context.card and context.card ~= card then
+                card.ability.extra.xchips = card.ability.extra.xchips + card.ability.extra.increase
+                G.E_MANAGER:add_event(Event({
+                    func = function() card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')}); return true
+                end}))
+            end
         end
         if context.end_of_round and G.GAME.blind.boss and card.ability.extra.xchips ~= 1 and not context.blueprint then
             card.ability.extra.xchips = 1
@@ -519,13 +523,13 @@ SMODS.Joker {
     atlas = 'j_minotaur',
     pos = { x = 0, y = 0 },
     rarity = 3,
-    cost = 8,
+    cost = 9,
     unlocked = true,
     discovered = true,
     blueprint_compat = true,
     perishable_compat = false,
     eternal_compat = true,
-    config = { extra = { increase = 50, chips = 0 } },
+    config = { extra = { increase = 45, chips = 0 } },
     loc_vars = function(self, info_queue, card)
     return { vars = { card.ability.extra.increase, card.ability.extra.chips } }
     end,
@@ -658,6 +662,136 @@ SMODS.Joker {
         if bonus > 0 then return bonus end
     end,
 }
+
+SMODS.Atlas{
+    key = "b_curtain",
+    path = "b_curtain.png",
+    px = 71,
+    py = 95
+}
+
+SMODS.Atlas{
+    key = "sleeve_curtain",
+    path = "sleeve_curtain.png",
+    px = 73,
+    py = 95
+}
+
+SMODS.Back({
+	key = "curtain", 
+	atlas = "b_curtain",
+	pos = {x = 0, y = 0},
+	config = { vouchers = { "v_magic_trick" }},
+    unlocked = true,
+    calculate = function(self, back, context)
+        if context.playing_card_added then
+            if context.cards and context.cards[1] then
+                for k, v in pairs(context.cards) do
+                    local destroyed_cards = {}
+                    v.getting_sliced = true
+                    G.E_MANAGER:add_event(Event({
+					    func = function()
+                            local curtain_bonus = v.base.nominal or 0
+
+                            if SMODS.has_no_rank(v) then
+                                curtain_bonus = 0
+                            else
+                                curtain_bonus = v.base.nominal
+                            end
+                                for k, t in pairs(G.playing_cards) do
+                                    t.ability.bonus = t.ability.bonus or 0
+                                    t.ability.bonus = t.ability.bonus + curtain_bonus
+                                end
+                            if G.deck and G.deck.cards[1] then
+						        G.deck.cards[#G.deck.cards]:juice_up(0.8, 0.8)
+                                card_eval_status_text(G.deck.cards[#G.deck.cards], 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_chips', vars = {curtain_bonus}}, colour = G.C.BLUE})
+                            end
+
+                            if SMODS.shatters(v) then
+                                local t = v
+                                t.shattered = true
+                                destroyed_cards[#destroyed_cards+1] = t
+                                v:shatter()
+                            else
+                                destroyed_cards[#destroyed_cards+1] = v
+						        v:start_dissolve({ G.C.BLUE }, nil, 1.6)
+                            end
+
+                            SMODS.calculate_context({ remove_playing_cards = true, removed = destroyed_cards })
+
+						    return true
+					    end,
+				    }))
+                end
+            end
+        end
+    end,
+})
+
+if next(SMODS.find_mod("CardSleeves")) and (SMODS.Mods['CardSleeves'] or {}).can_load then
+CardSleeves.Sleeve {
+    key = "curtain",
+    atlas = "sleeve_curtain",
+    pos = { x = 0, y = 0 },
+    unlocked = true,
+    loc_vars = function(self)
+        local key
+        if self.get_current_deck_key() ~= "b_slightjokers_curtain" then
+            key = self.key
+            self.config = { vouchers = { "v_magic_trick" } }
+        else
+            key = self.key .. "_alt"
+            self.config = { vouchers = { "v_magic_trick", "v_illusion" } }
+        end
+        return { key = key, vars = {} }
+    end,
+    calculate = function(self, sleeve, context)
+        if self.get_current_deck_key() ~= "b_slightjokers_curtain" then
+        if context.playing_card_added then
+            if context.cards and context.cards[1] then
+                for k, v in pairs(context.cards) do
+                    local destroyed_cards = {}
+                    v.getting_sliced = true
+                    G.E_MANAGER:add_event(Event({
+					    func = function()
+                            local curtain_bonus = v.base.nominal or 0
+
+                            if SMODS.has_no_rank(v) then
+                                curtain_bonus = 0
+                            else
+                                curtain_bonus = v.base.nominal
+                            end
+                                for k, t in pairs(G.playing_cards) do
+                                    t.ability.bonus = t.ability.bonus or 0
+                                    t.ability.bonus = t.ability.bonus + curtain_bonus
+                                end
+                            if G.deck and G.deck.cards[1] then
+						        G.deck.cards[#G.deck.cards]:juice_up(0.8, 0.8)
+                                card_eval_status_text(G.deck.cards[#G.deck.cards], 'extra', nil, nil, nil, {message = localize{type = 'variable', key = 'a_chips', vars = {curtain_bonus}}, colour = G.C.BLUE})
+                            end
+
+                            if SMODS.shatters(v) then
+                                local t = v
+                                t.shattered = true
+                                destroyed_cards[#destroyed_cards+1] = t
+                                v:shatter()
+                            else
+                                destroyed_cards[#destroyed_cards+1] = v
+						        v:start_dissolve({ G.C.BLUE }, nil, 1.6)
+                            end
+
+                            SMODS.calculate_context({ remove_playing_cards = true, removed = destroyed_cards })
+
+						    return true
+					    end,
+				    }))
+                end
+            end
+        end
+        end
+    end,
+}
+end
 
 SMODS.Challenge:take_ownership('c_inflation_1', {
     restrictions = {

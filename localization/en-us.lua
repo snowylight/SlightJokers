@@ -13,6 +13,7 @@ return {
                 name="Century Egg",
                 text={
                     "{C:dark_edition}+#1#{} Joker Slot",
+                    "if you held this joker",
                     "At end of round",
                     "cash this joker's {C:attention}Sell Value{}",
                 },
@@ -128,6 +129,37 @@ return {
                     "have at end of round",
                     "reduces by {C:money}$#2#{}",
                     "when entering shop",
+                },
+            },
+        },
+        Back={
+            b_slightjokers_curtain={
+                name="Curtain Deck",
+                text={
+                    "Start run with the",
+                    "{C:attention,T:v_magic_trick}Magic Trick{} voucher",
+                    "{C:attention}Destroy{} added cards",
+                    "and all cards in your deck",
+                    "will gain equal {C:chips}chips",
+                },
+            },
+        },
+        Sleeve={
+            sleeve_slightjokers_curtain={
+                name="Curtain Sleeve",
+                text={
+                    "Start run with the",
+                    "{C:attention,T:v_magic_trick}Magic Trick{} voucher",
+                    "{C:attention}Destroy{} added cards",
+                    "and all cards in your deck",
+                    "will gain equal {C:chips}chips",
+                },
+            },
+            sleeve_slightjokers_curtain_alt={
+                name="Curtain Sleeve",
+                text={
+                    "Start run with the",
+                    "{C:attention,T:v_illusion}Illusion{} voucher",
                 },
             },
         },

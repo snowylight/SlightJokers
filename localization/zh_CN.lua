@@ -12,6 +12,7 @@ return {
             j_slightjokers_century_egg={
                 name="皮蛋",
                 text={
+                    "拥有此小丑牌时",
                     "小丑牌槽位{C:dark_edition}+#1#{}",
                     "在每回合结束时获得",
                     "本卡{C:attention}出售价值{}的资金",
@@ -128,6 +129,37 @@ return {
                     "每拥有{C:money}$5{}",
                     "可以额外获得{C:money}$#1#{}的{C:attention}利息{}",
                     "在进入商店时减{C:money}$#2#{}",
+                },
+            },
+        },
+        Back={
+            b_slightjokers_curtain={
+                name="帷幕牌组",
+                text={
+                    "开局时拥有",
+                    "{C:attention,T:v_magic_trick}魔术{}优惠券",
+                    "添加的游戏牌将被{C:attention}摧毁",
+                    "并使牌组中所有卡牌",
+                    "获得相同点数的{C:chips}基础筹码",
+                },
+            },
+        },
+        Sleeve={
+            sleeve_slightjokers_curtain={
+                name="帷幕牌套",
+                text={
+                    "开局时拥有",
+                    "{C:attention,T:v_magic_trick}魔术{}优惠券",
+                    "添加的游戏牌将被{C:attention}摧毁",
+                    "并使牌组中所有卡牌",
+                    "获得相同点数的{C:chips}基础筹码",
+                },
+            },
+            sleeve_slightjokers_curtain_alt={
+                name="帷幕牌套",
+                text={
+                    "开局时拥有",
+                    "{C:attention,T:v_illusion}幻象{}优惠券",
                 },
             },
         },
