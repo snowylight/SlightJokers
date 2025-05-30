@@ -110,6 +110,41 @@ SMODS.Atlas{
     py = 95
 }
 
+SMODS.Atlas{
+    key = "j_square_family",
+    path = "j_square_family.png",
+    px = 71,
+    py = 95
+}
+
+SMODS.Atlas{
+    key = "j_great_moment",
+    path = "j_great_moment.png",
+    px = 71,
+    py = 95
+}
+
+SMODS.Atlas{
+    key = "j_private_bank",
+    path = "j_private_bank.png",
+    px = 71,
+    py = 95
+}
+
+SMODS.Atlas{
+    key = "j_cloistered_joker",
+    path = "j_cloistered_joker.png",
+    px = 71,
+    py = 95
+}
+
+SMODS.Atlas{
+    key = "j_lightning_summit",
+    path = "j_lightning_summit.png",
+    px = 71,
+    py = 95
+}
+
 SMODS.Joker {
     key = 'blue_card',
     atlas = 'j_blue_card',
@@ -663,6 +698,176 @@ SMODS.Joker {
     end,
 }
 
+SMODS.Joker {
+    key = 'square_family',
+    atlas = 'j_square_family',
+    pos = { x = 0, y = 0 },
+    rarity = 2,
+    cost = 6,
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    perishable_compat = true,
+    eternal_compat = true,
+    config = { extra = { xchips = 1.6 } },
+    loc_vars = function(self, info_queue, card)
+    return { vars = { card.ability.extra.xchips }}
+    end,
+    set_sprites = function(self, card, front)
+        card.children.center.scale.y = card.children.center.scale.x
+        local W, H = card.T.w, card.T.h
+        H = W
+        card.T.h = H
+    end,
+    calculate = function(self, card, context)
+        if context.open_booster and context.card.ability.name:find('Buffoon') and not context.blueprint then
+            G.E_MANAGER:add_event(Event({func = function()
+            for i = 1, #G.pack_cards.cards do
+                if G.pack_cards.cards[i].ability.set == "Joker" and not (G.pack_cards.cards[i].config.center.soul_pos or G.pack_cards.cards[i].config.center.name == "Square Joker" or G.pack_cards.cards[i].config.center.name == "Half Joker" or G.pack_cards.cards[i].config.center.key == "j_slightjokers_square_family") then
+                    card_eval_status_text(G.pack_cards.cards[i], "extra", nil, nil, nil, {message = localize('slightjokers_square'), colour = G.C.BLUE})
+                    G.pack_cards.cards[i]:juice_up(0.5, 0.5)
+                    G.pack_cards.cards[i].T.h = G.pack_cards.cards[i].T.w
+                    G.pack_cards.cards[i].ability.slightjokers_square = true
+                    break
+                end
+            end
+            return true end}))
+        end
+        if context.other_joker then
+            if context.other_joker.ability.slightjokers_square or context.other_joker.config.center.name == "Square Joker" or context.other_joker.config.center.key == "j_slightjokers_square_family" then
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    context.other_joker:juice_up(0.5, 0.5)
+                    return true
+                end
+            })) 
+            return {
+                message = localize{type='variable',key='a_xchips',vars={card.ability.extra.xchips}},
+                Xchip_mod = card.ability.extra.xchips,
+            }
+            end
+        end
+    end,
+}
+
+SMODS.Joker {
+    key = 'great_moment',
+    atlas = 'j_great_moment',
+    pos = { x = 0, y = 0 },
+    rarity = 2,
+    cost = 6,
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    perishable_compat = true,
+    eternal_compat = true,
+    config = { extra = {} },
+    loc_vars = function(self, info_queue, card)
+    return { vars = {} }
+    end,
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play and context.other_card and context.other_card == context.scoring_hand[1] then
+            return {
+                card = card,
+                balance = true
+            }
+        end
+    end,
+}
+
+SMODS.Joker {
+    key = 'private_bank',
+    atlas = 'j_private_bank',
+    pos = { x = 0, y = 0 },
+    rarity = 3,
+    cost = 8,
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = false,
+    perishable_compat = true,
+    eternal_compat = true,
+    config = { extra = { slot = 1 } },
+    loc_vars = function(self, info_queue, card)
+    return { vars = { card.ability.extra.slot } }
+    end,
+    calculate = function(self, card, context)
+    end,
+    add_to_deck = function(self, card, context)
+        change_shop_size(card.ability.extra.slot)
+        SMODS.change_voucher_limit(card.ability.extra.slot)
+        SMODS.change_booster_limit(card.ability.extra.slot)
+    end,
+    remove_from_deck = function(self, card, context)
+        change_shop_size(-card.ability.extra.slot)
+        SMODS.change_voucher_limit(-card.ability.extra.slot)
+        SMODS.change_booster_limit(-card.ability.extra.slot)
+    end,
+}
+
+SMODS.Joker {
+    key = 'cloistered_joker',
+    atlas = 'j_cloistered_joker',
+    pos = { x = 0, y = 0 },
+    rarity = 2,
+    cost = 6,
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    perishable_compat = false,
+    eternal_compat = true,
+    config = { extra = { increase = 2, mult = 0 } },
+    loc_vars = function(self, info_queue, card)
+    return { vars = { card.ability.extra.increase, card.ability.extra.mult } }
+    end,
+    calculate = function(self, card, context)
+        if G.pack_cards and context.using_consumeable and not context.blueprint then
+            card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.increase
+            G.E_MANAGER:add_event(Event({
+            func = function() 
+                card_eval_status_text(card, 'extra', nil, nil, nil, {
+                    message = localize{type = 'variable', key = 'a_mult', vars = {card.ability.extra.increase}},
+                    colour = G.C.RED,
+                    delay = 0.45, 
+                    card = card
+                }) 
+                return true
+            end}))
+            return nil, true
+        end
+        if context.joker_main and context.cardarea == G.jokers and card.ability.extra.mult > 0 then
+            return {
+                message = localize{type='variable',key='a_mult',vars={card.ability.extra.mult}},
+                mult_mod = card.ability.extra.mult
+            }
+        end
+    end,
+}
+
+SMODS.Joker {
+    key = 'lightning_summit',
+    atlas = 'j_lightning_summit',
+    pos = { x = 0, y = 0 },
+    rarity = 2,
+    cost = 6,
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    perishable_compat = true,
+    eternal_compat = true,
+    config = { extra = { mult = 9 } },
+    loc_vars = function(self, info_queue, card)
+    return { vars = { card.ability.extra.mult } }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main and context.cardarea == G.jokers and G.GAME.current_round.hands_left > 0 then
+            return {
+                message = localize{type='variable',key='a_mult',vars={G.GAME.current_round.hands_left*card.ability.extra.mult}},
+                mult_mod = G.GAME.current_round.hands_left*card.ability.extra.mult
+            }
+        end
+    end,
+}
+
 SMODS.Atlas{
     key = "b_curtain",
     path = "b_curtain.png",
@@ -791,6 +996,21 @@ CardSleeves.Sleeve {
         end
     end,
 }
+end
+
+local slightjokers_card_load = Card.load
+function Card:load(cardTable, other_card)
+	local ret = slightjokers_card_load(self, cardTable, other_card)
+    local scale = 1
+    local H = G.CARD_H
+    local W = G.CARD_W
+    if self.ability.slightjokers_square then
+        H = W
+        self.T.h = H*scale
+        self.T.w = W*scale
+    end
+
+	return ret
 end
 
 SMODS.Challenge:take_ownership('c_inflation_1', {

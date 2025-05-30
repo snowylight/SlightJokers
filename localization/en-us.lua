@@ -80,7 +80,7 @@ return {
             j_slightjokers_world_end={
                 name="World's End",
                 text={
-                    "{C:planet}Planet{} in consumable slot",
+                    "{C:planet}Planet{} card in consumable slot",
                     "each give {C:chips}+#1#{} Chips, {C:mult}+#2#{} Mult",
                     "and {X:mult,C:white} X#3# {} Mult",
                 },
@@ -129,6 +129,47 @@ return {
                     "have at end of round",
                     "reduces by {C:money}$#2#{}",
                     "when entering shop",
+                },
+            },
+            j_slightjokers_square_family={
+                name="Square Family",
+                text={
+                    "Make a random joker {C:attention}Square",
+                    "when any {C:attention}Buffoon Pack{} is opened",
+                    "{C:blue}Square{} Jokers",
+                    "each give {X:chips,C:white} X#1# {} Chips",
+                },
+            },
+            j_slightjokers_great_moment={
+                name="Great Moment",
+                text={
+                    "First played {C:attention}card",
+                    "balance {C:blue}Chips{} and",
+                    "{C:red}Mult{} when scored",
+                },
+            },
+            j_slightjokers_private_bank={
+                name="Private Bank Card",
+                text={
+                    "{C:attention}+#1#{} various slot",
+                    "available in shop",
+                },
+            },
+            j_slightjokers_cloistered_joker={
+                name="Cloistered Joker",
+                text={
+                    "Gains {C:mult}+#1#{} Mult",
+                    "per {C:attention}Consumable{} card used",
+                    "when in any {C:attention}Booster Pack{}",
+                    "{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)",
+                },
+            },
+            j_slightjokers_lightning_summit={
+                name="Lightning Summit",
+                text={
+                    "{C:mult}+#1#{} Mult for",
+                    "each remaining",
+                    "{C:attention}hand",
                 },
             },
         },
@@ -185,6 +226,7 @@ return {
     misc = {
         dictionary = {
             slightjokers_erupt_solidify="Solidify",
+            slightjokers_square="Square",
         },
         v_dictionary={
             slightjokers_worldend="+#1# Chips +#2# Mult X#3# Mult",

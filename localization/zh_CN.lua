@@ -131,6 +131,47 @@ return {
                     "在进入商店时减{C:money}$#2#{}",
                 },
             },
+            j_slightjokers_square_family={
+                name="方型家族",
+                text={
+                    "打开任一{C:attention}小丑包{}时",
+                    "其中随机牌将{C:attention}变方{}",
+                    "每张{C:blue}方型{}的小丑牌",
+                    "会给予{X:chips,C:white} X#1# {}筹码",
+                },
+            },
+            j_slightjokers_great_moment={
+                name="美好时光",
+                text={
+                    "打出的{C:attention}第一张{}卡牌",
+                    "在计分时",
+                    "会平衡{C:blue}筹码{}和{C:red}倍率{}",
+                },
+            },
+            j_slightjokers_private_bank={
+                name="私行贵宾卡",
+                text={
+                    "商店内",
+                    "各种槽位{C:attention}+#1#{}",
+                },
+            },
+            j_slightjokers_cloistered_joker={
+                name="隐居小丑",
+                text={
+                    "在任一{C:attention}补充包{}中时",
+                    "每使用一张{C:attention}消耗牌{}",
+                    "这张小丑牌获得{C:mult}+#1#{}倍率",
+                    "{C:inactive}（当前为{C:mult}+#2#{C:inactive}倍率）",
+                },
+            },
+            j_slightjokers_lightning_summit={
+                name="闪电之峰",
+                text={
+                    "每一个剩余的",
+                    "{C:attention}出牌{}次数",
+                    "{C:mult}+#1#{}倍率",
+                },
+            },
         },
         Back={
             b_slightjokers_curtain={
@@ -185,6 +226,7 @@ return {
     misc = {
         dictionary = {
             slightjokers_erupt_solidify="凝固",
+            slightjokers_square="方型",
         },
         v_dictionary={
             slightjokers_worldend="+#1#筹码 +#2#倍率 X#3#倍率",
